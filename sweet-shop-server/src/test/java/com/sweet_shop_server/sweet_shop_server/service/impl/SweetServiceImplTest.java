@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -344,6 +345,38 @@ class SweetServiceImplTest {
         verify(sweetRepository).findById(id);
         verify(sweetRepository, never()).save(any());
         verify(modelMapper, never()).map(any(), any());
+    }
+
+
+    @Test
+    void deleteSweet_WhenExists_ShouldDeleteSuccessfully() {
+        Long id = 1L;
+
+        // given
+        when(sweetRepository.existsById(id)).thenReturn(true);
+
+        // when
+        sweetService.deleteSweet(id);
+
+        // then
+        verify(sweetRepository, times(1)).existsById(id);
+        verify(sweetRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    void deleteSweet_WhenNotExists_ShouldThrowException() {
+        Long id = 1L;
+
+        // given
+        when(sweetRepository.existsById(id)).thenReturn(false);
+
+        // then
+        assertThatThrownBy(() -> sweetService.deleteSweet(id))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Sweet not found with id: " + id);
+
+        verify(sweetRepository, times(1)).existsById(id);
+        verify(sweetRepository, never()).deleteById(anyLong());
     }
 
 

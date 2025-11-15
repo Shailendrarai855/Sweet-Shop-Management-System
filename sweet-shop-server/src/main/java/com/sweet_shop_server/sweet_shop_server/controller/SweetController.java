@@ -51,6 +51,6 @@ public class SweetController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteSweet(@PathVariable Long id) {
         sweetService.deleteSweet(id);
-        return ResponseEntity.ok("Sweet deleted successfully");
+        return ResponseEntity.ok("Sweet deleted successfully.");
     }
 }

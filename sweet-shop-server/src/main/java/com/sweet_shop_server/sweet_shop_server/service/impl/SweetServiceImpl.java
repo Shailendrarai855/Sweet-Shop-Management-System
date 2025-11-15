@@ -87,6 +87,13 @@ public class SweetServiceImpl implements SweetService {
 
     @Override
     public void deleteSweet(Long id) {
+        boolean exists = sweetRepository.existsById(id);
 
+        if (!exists) {
+            throw new ResourceNotFoundException("Sweet not found with id: " + id);
+        }
+
+        sweetRepository.deleteById(id);
     }
+
 }
