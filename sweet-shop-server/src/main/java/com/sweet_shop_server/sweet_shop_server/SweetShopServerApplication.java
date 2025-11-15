@@ -8,6 +8,7 @@ public class SweetShopServerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SweetShopServerApplication.class, args);
+		System.out.println("sweet shop is opened");
 	}
 
 }
