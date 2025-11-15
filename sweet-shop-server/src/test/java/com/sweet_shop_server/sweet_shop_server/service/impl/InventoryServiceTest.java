@@ -89,4 +89,49 @@ public class InventoryServiceTest {
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("Not enough stock. Available: 2");
     }
+
+    @Test
+    void testRestockSweet_Success() {
+        // Given
+        Sweet sweet = new Sweet();
+        sweet.setId(1L);
+        sweet.setName("Chocolate");
+        sweet.setQuantity(5);
+
+        when(sweetRepository.findById(1L)).thenReturn(Optional.of(sweet));
+        when(sweetRepository.save(any(Sweet.class))).thenReturn(sweet);
+
+        // When
+        String result = inventoryService.restockSweet(1L, 3);
+
+        // Then
+        assertThat(result).isEqualTo("Restocked 3 x Chocolate");
+        assertThat(sweet.getQuantity()).isEqualTo(8); // stock updated
+        verify(sweetRepository).save(sweet);
+    }
+
+    @Test
+    void testRestockSweet_SweetNotFound() {
+        when(sweetRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> inventoryService.restockSweet(1L, 3))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Sweet not found with id: 1");
+    }
+
+    @Test
+    void testRestockSweet_InvalidQuantity() {
+        Sweet sweet = new Sweet();
+        sweet.setId(1L);
+        sweet.setName("Chocolate");
+        sweet.setQuantity(5);
+
+        when(sweetRepository.findById(1L)).thenReturn(Optional.of(sweet));
+
+        assertThatThrownBy(() -> inventoryService.restockSweet(1L, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Quantity must be at least 1");
+    }
+
+
 }

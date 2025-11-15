@@ -47,6 +47,22 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public String restockSweet(Long sweetId, int quantity) {
-        return "";
+        Sweet sweet = sweetRepository.findById(sweetId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Sweet not found with id: " + sweetId));
+
+        // quantity must be positive
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be at least 1");
+        }
+
+        // add stock
+        sweet.setQuantity(sweet.getQuantity() + quantity);
+
+        sweetRepository.save(sweet);
+
+        return "Restocked " + quantity + " x " + sweet.getName();
     }
+
+
 }
