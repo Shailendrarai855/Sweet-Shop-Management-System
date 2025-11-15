@@ -45,8 +45,23 @@ public class SweetServiceImpl implements SweetService {
 
     @Override
     public List<SweetDTO> searchSweets(String name, String category, Double minPrice, Double maxPrice) {
-        return List.of();
+
+        List<Sweet> sweets = sweetRepository.findAll(); // get everything
+        log.info(String.valueOf(sweets.size()));
+        log.info(name);
+        // Filter in Java
+        List<SweetDTO> filterSweet =  sweets.stream()
+                .filter(s -> name == null || s.getName().toLowerCase().contains(name))
+                .filter(s -> category == null || s.getCategory().equalsIgnoreCase(category))
+                .filter(s -> minPrice == null || s.getPrice() >= minPrice)
+                .filter(s -> maxPrice == null || s.getPrice() <= maxPrice)
+                .map(s->modelMapper.map(s, SweetDTO.class))
+                .toList();
+
+        log.info("sweets are there : {}", filterSweet.size());
+        return filterSweet;
     }
+
 
     @Override
     public SweetDTO getSweetById(Long id) {

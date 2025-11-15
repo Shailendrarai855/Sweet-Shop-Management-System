@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -74,6 +75,12 @@ class SweetServiceImplTest {
         sweetDTO2.setName("Ladoo");
         sweetDTO2.setPrice(40.0);
         sweetDTO2.setQuantity(20);
+        sweetService = new SweetServiceImpl( modelMapper, sweetRepository);
+
+    }
+
+    private Sweet sweet(String name, String category, double price) {
+        return new Sweet(null, name, category, price, 10);
     }
 
 
@@ -172,4 +179,99 @@ class SweetServiceImplTest {
         verify(sweetRepository).findAll();
         verify(modelMapper, never()).map(any(), any());
     }
+
+
+    @Test
+    void testSearchSweets_ByName() {
+        // given
+        List<Sweet> sweets = Arrays.asList(
+                sweet("Gulab Jamun", "Dessert", 50.0),
+                sweet("Kaju Katli", "Dessert", 100.0),
+                sweet("Rasgulla", "Bengali", 40.0)
+        );
+
+        when(sweetRepository.findAll()).thenReturn(sweets);
+
+        // when
+        List<SweetDTO> result = sweetService.searchSweets("gulab", null, null, null);
+
+        // then
+        assertThat(result).hasSize(1);
+        assertThat(result.getFirst().getName()).isEqualTo("Gulab Jamun");
+    }
+
+    @Test
+    void testSearchSweets_ByCategory() {
+        when(sweetRepository.findAll()).thenReturn(List.of(
+                sweet("Barfi", "North", 70.0),
+                sweet("Sandesh", "Bengali", 60.0)
+        ));
+        when(modelMapper.map(any(Sweet.class), eq(SweetDTO.class)))
+                .thenAnswer(invocation -> {
+                    Sweet s = invocation.getArgument(0);
+                    SweetDTO dto = new SweetDTO();
+                    dto.setName(s.getName());
+                    dto.setCategory(s.getCategory());
+                    dto.setPrice(s.getPrice());
+                    return dto;
+                });
+        List<SweetDTO> result = sweetService.searchSweets(null, "Bengali", null, null);
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCategory()).isEqualTo("Bengali");
+    }
+
+    @Test
+    void testSearchSweets_ByPriceRange() {
+        when(sweetRepository.findAll()).thenReturn(List.of(
+                sweet("Ladoo", "Indian", 30.0),
+                sweet("Peda", "Indian", 80.0),
+                sweet("Halwa", "Indian", 120.0)
+        ));
+        when(modelMapper.map(any(Sweet.class), eq(SweetDTO.class)))
+                .thenAnswer(invocation -> {
+                    Sweet s = invocation.getArgument(0);
+                    SweetDTO dto = new SweetDTO();
+                    dto.setName(s.getName());
+                    dto.setCategory(s.getCategory());
+                    dto.setPrice(s.getPrice());
+                    return dto;
+                });
+        List<SweetDTO> result = sweetService.searchSweets(null, null, 50.0, 100.0);
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getName()).isEqualTo("Peda");
+    }
+
+
+    @Test
+    void testSearchSweets_MultipleFilters() {
+
+        when(sweetRepository.findAll()).thenReturn(List.of(
+                sweet("Kaju Katli", "Royal", 200.0),
+                sweet("Milk Cake", "Royal", 150.0),
+                sweet("Jalebi", "Street", 40.0)
+        ));
+
+        // FIX: mock modelMapper so it does not return null
+        when(modelMapper.map(any(Sweet.class), eq(SweetDTO.class)))
+                .thenAnswer(invocation -> {
+                    Sweet s = invocation.getArgument(0);
+                    SweetDTO dto = new SweetDTO();
+                    dto.setName(s.getName());
+                    dto.setCategory(s.getCategory());
+                    dto.setPrice(s.getPrice());
+                    return dto;
+                });
+
+        List<SweetDTO> result = sweetService.searchSweets("kaju", "Royal", 100.0, 300.0);
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getName()).isEqualTo("Kaju Katli");
+    }
+
+
+
+
+
 }
