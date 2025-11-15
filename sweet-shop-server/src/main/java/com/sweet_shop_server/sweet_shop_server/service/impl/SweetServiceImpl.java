@@ -36,7 +36,11 @@ public class SweetServiceImpl implements SweetService {
 
     @Override
     public List<SweetDTO> getAllSweets() {
-        return List.of();
+        List<Sweet> sweets = sweetRepository.findAll();
+
+        return sweets.stream()
+                .map(sweet -> modelMapper.map(sweet, SweetDTO.class))
+                .toList();
     }
 
     @Override
