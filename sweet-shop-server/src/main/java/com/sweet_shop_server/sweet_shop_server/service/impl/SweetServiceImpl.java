@@ -2,6 +2,7 @@ package com.sweet_shop_server.sweet_shop_server.service.impl;
 
 import com.sweet_shop_server.sweet_shop_server.dto.SweetDTO;
 import com.sweet_shop_server.sweet_shop_server.entity.Sweet;
+import com.sweet_shop_server.sweet_shop_server.exceptions.ResourceNotFoundException;
 import com.sweet_shop_server.sweet_shop_server.repository.SweetRepository;
 import com.sweet_shop_server.sweet_shop_server.service.SweetService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -70,7 +72,17 @@ public class SweetServiceImpl implements SweetService {
 
     @Override
     public SweetDTO updateSweet(Long id, SweetDTO sweetDTO) {
-        return null;
+        Sweet existingSweet = sweetRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Sweet not found with id: " + id));
+
+        existingSweet.setName(sweetDTO.getName());
+        existingSweet.setPrice(sweetDTO.getPrice());
+        existingSweet.setCategory(sweetDTO.getCategory());
+        existingSweet.setQuantity(sweetDTO.getQuantity());
+
+        Sweet updatedSweet = sweetRepository.save(existingSweet);
+
+        return modelMapper.map(updatedSweet, SweetDTO.class);
     }
 
     @Override

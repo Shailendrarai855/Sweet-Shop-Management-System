@@ -2,6 +2,7 @@ package com.sweet_shop_server.sweet_shop_server.service.impl;
 
 import com.sweet_shop_server.sweet_shop_server.dto.SweetDTO;
 import com.sweet_shop_server.sweet_shop_server.entity.Sweet;
+import com.sweet_shop_server.sweet_shop_server.exceptions.ResourceNotFoundException;
 import com.sweet_shop_server.sweet_shop_server.repository.SweetRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.modelmapper.ModelMapper;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -270,8 +272,79 @@ class SweetServiceImplTest {
         assertThat(result.get(0).getName()).isEqualTo("Kaju Katli");
     }
 
+    @Test
+    void testUpdateSweet_WhenExists_ShouldUpdateAndReturnDTO() {
+        Long id = 1L;
+
+        SweetDTO inputDTO = new SweetDTO();
+        inputDTO.setName("Updated Gulab Jamun");
+        inputDTO.setPrice(70.0);
+        inputDTO.setCategory("Royal");
+        inputDTO.setQuantity(15);
+
+        Sweet existingSweet = new Sweet();
+        existingSweet.setId(id);
+        existingSweet.setName("Old Name");
+        existingSweet.setPrice(50.0);
+        existingSweet.setCategory("Dessert");
+        existingSweet.setQuantity(10);
+
+        Sweet updatedSweet = new Sweet();
+        updatedSweet.setId(id);
+        updatedSweet.setName("Updated Gulab Jamun");
+        updatedSweet.setPrice(70.0);
+        updatedSweet.setCategory("Royal");
+        updatedSweet.setQuantity(15);
+
+        SweetDTO outputDTO = new SweetDTO();
+        outputDTO.setName("Updated Gulab Jamun");
+        outputDTO.setPrice(70.0);
+        outputDTO.setCategory("Royal");
+        outputDTO.setQuantity(15);
+
+        // Mock repo find
+        when(sweetRepository.findById(id)).thenReturn(java.util.Optional.of(existingSweet));
+
+        // Mock save
+        when(sweetRepository.save(existingSweet)).thenReturn(updatedSweet);
+
+        // Mock model mapper
+        when(modelMapper.map(updatedSweet, SweetDTO.class)).thenReturn(outputDTO);
+
+        // Call service
+        SweetDTO result = sweetService.updateSweet(id, inputDTO);
+
+        // Verify result
+        assertNotNull(result);
+        assertEquals("Updated Gulab Jamun", result.getName());
+        assertEquals(70.0, result.getPrice());
+        assertEquals("Royal", result.getCategory());
+        assertEquals(15, result.getQuantity());
+
+        // Verify interactions
+        verify(sweetRepository).findById(id);
+        verify(sweetRepository).save(existingSweet);
+        verify(modelMapper).map(updatedSweet, SweetDTO.class);
+    }
 
 
+    @Test
+    void testUpdateSweet_WhenSweetNotFound_ShouldThrowException() {
+        Long id = 1L;
+
+        SweetDTO inputDTO = new SweetDTO();
+        inputDTO.setName("New Name");
+
+        when(sweetRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            sweetService.updateSweet(id, inputDTO);
+        });
+
+        verify(sweetRepository).findById(id);
+        verify(sweetRepository, never()).save(any());
+        verify(modelMapper, never()).map(any(), any());
+    }
 
 
 }
