@@ -42,10 +42,7 @@ public class SweetController {
     }
 
     @PutMapping("/sweets/{id}")
-    public ResponseEntity<SweetDTO> updateSweet(
-            @PathVariable Long id,
-            @RequestBody SweetDTO sweet
-    ) {
+    public ResponseEntity<SweetDTO> updateSweet(@PathVariable Long id, @RequestBody SweetDTO sweet) {
         SweetDTO updated = sweetService.updateSweet(id, sweet);
         return ResponseEntity.ok(updated);
     }

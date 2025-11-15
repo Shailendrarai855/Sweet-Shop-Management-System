@@ -21,7 +21,16 @@ public class SweetServiceImpl implements SweetService {
 
     @Override
     public SweetDTO addSweet(SweetDTO sweetDTO) {
-        return null;
+        Sweet sweet = modelMapper.map(sweetDTO, Sweet.class);
+        if(sweetRepository.existsByName(sweet.getName())){
+            throw new RuntimeException("Sweet with name "+sweet.getName()+" already exist.");
+        }
+        if(sweet.getPrice()<0 || sweet.getQuantity()<0){
+            throw new RuntimeException("Sweet price and Quantity cannot be Negative.");
+        }
+        sweetRepository.save(sweet);
+        return modelMapper.map(sweet, SweetDTO.class);
+
     }
 
     @Override
