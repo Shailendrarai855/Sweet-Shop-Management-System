@@ -29,6 +29,7 @@ public class SweetServiceImpl implements SweetService {
             throw new RuntimeException("Sweet price and Quantity cannot be Negative.");
         }
         sweetRepository.save(sweet);
+        log.info("Sweet saved.");
         return modelMapper.map(sweet, SweetDTO.class);
 
     }
