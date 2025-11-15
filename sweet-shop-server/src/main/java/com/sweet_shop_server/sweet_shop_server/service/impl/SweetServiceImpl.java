@@ -67,7 +67,11 @@ public class SweetServiceImpl implements SweetService {
 
     @Override
     public SweetDTO getSweetById(Long id) {
-        return null;
+        Sweet existingSweet = sweetRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Sweet not found with id: " + id));
+        return modelMapper.map(existingSweet, SweetDTO.class);
+
+
     }
 
     @Override
