@@ -78,7 +78,7 @@ build/
 *.lock.db
 
 # Application properties with sensitive data
-application-local.properties
+application.properties
 application-dev.properties
 application-prod.properties
 
