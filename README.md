@@ -15,7 +15,6 @@ A full-stack web application for managing a sweet shop inventory with user authe
 - [Screenshots](#screenshots)
 - [My AI Usage](#my-ai-usage)
 - [Testing](#testing)
-- [Deployment](#deployment)
 
 ## 🎯 Project Overview
 
