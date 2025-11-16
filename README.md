@@ -125,7 +125,7 @@ Before you begin, ensure you have the following installed:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/sweet-shop-management-system.git
+git clonehttps://github.com/Shailendrarai855/Sweet-Shop-Management-System.git
 cd sweet-shop-management-system
 ```
 
@@ -239,7 +239,7 @@ By default, all users register as customers. To create an admin account:
 For detailed setup instructions, see:
 - [Backend Setup Guide](BACKEND_SETUP.md)
 - [Frontend Setup Guide](FRONTEND_SETUP.md)
-- [Admin Setup Guide](sweet-shop-client/ADMIN_SETUP.md)
+
 
 ## 📚 API Documentation
 
@@ -249,7 +249,7 @@ For detailed setup instructions, see:
 |--------|----------|-------------|---------------|
 | POST | `/api/auth/register` | Register new user | No |
 | POST | `/api/auth/login` | Login user | No |
-| POST | `/api/auth/refresh` | Refresh access token | Yes (Cookie) |
+
 
 ### Sweet Management Endpoints
 
@@ -503,14 +503,12 @@ Contributions are welcome! Please follow these steps:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
-
-This project is licensed under the MIT License.
 
 ## 👥 Authors
 
-- **Your Name** - *Initial work*
+- **Shailendra Kumar Rai** - *Initial work*
 - **Kiro AI Assistant** - *AI Co-development*
+- **Chatgpt AI Assistant** - *AI Co-development*
 
 ## 🙏 Acknowledgments
 
