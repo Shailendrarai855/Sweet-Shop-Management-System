@@ -300,10 +300,6 @@ curl -X GET http://localhost:8050/api/sweets \
 
 ## 📸 Screenshots
 
-### Home Page - Browse Sweets
-![Home Page](screenshots/home-page.png)
-*Browse all available sweets with real-time stock information*
-
 ### Search & Filter
 ![Search Feature](screenshots/search-filter.png)
 *Advanced search functionality to find sweets by name, category, or price range*
