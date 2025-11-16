@@ -300,9 +300,13 @@ curl -X GET http://localhost:8050/api/sweets \
 
 ## 📸 Screenshots
 
-### Home Page - Browse Sweets
-![Home Page](screenshots/home-page.png)
-*Browse all available sweets with real-time stock information*
+### Login Page
+![Login](screenshots/login.png)
+*Secure login with JWT authentication*
+
+### Register Page
+![Register](screenshots/register.png)
+*User-friendly registration form*
 
 ### Search & Filter
 ![Search Feature](screenshots/search-filter.png)
@@ -327,14 +331,6 @@ curl -X GET http://localhost:8050/api/sweets \
 ### Restock Inventory
 ![Restock](screenshots/restock.png)
 *Quick restock functionality with custom quantity input*
-
-### Login Page
-![Login](screenshots/login.png)
-*Secure login with JWT authentication*
-
-### Register Page
-![Register](screenshots/register.png)
-*User-friendly registration form*
 
 ## 🤖 My AI Usage
 
