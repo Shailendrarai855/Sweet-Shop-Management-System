@@ -1,4 +1,4 @@
-package com.codingshuttle.project.uber.uberApp.advices;
+package com.sweet_shop_server.sweet_shop_server.advices;
 
 import com.sweet_shop_server.sweet_shop_server.advices.ApiResponse;
 import org.springframework.core.MethodParameter;

@@ -48,7 +48,7 @@ spring.application.name=sweet-shop-server
 server.port=8050
 
 # JWT Secret Key
-jwt.secretKey=abcdefghijklmnopqrstuvwxyz147852
+jwt.secretKey=your_secret_key
 
 # MySQL Connection
 spring.datasource.url=jdbc:mysql://localhost:3306/sweetshop?useSSL=false&serverTimezone=UTC
