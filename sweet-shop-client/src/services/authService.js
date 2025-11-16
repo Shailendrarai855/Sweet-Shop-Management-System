@@ -18,8 +18,14 @@ export const authService = {
 
   async refreshToken() {
     try {
-      // Backend uses cookies for refresh token, so no need to send it in body
-      const response = await api.post('/api/auth/refresh');
+      const refreshToken = this.getRefreshToken();
+      
+      if (!refreshToken) {
+        throw new Error('No refresh token available');
+      }
+
+      // Send refresh token in request body
+      const response = await api.post('/api/auth/refresh', { refreshToken });
       const { accessToken } = response.data;
       
       // Update the stored access token
