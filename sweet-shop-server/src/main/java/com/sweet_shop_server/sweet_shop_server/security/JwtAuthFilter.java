@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,7 @@ import java.io.IOException;
 
 @Configuration
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JWTService jwtService;
     private final UserService userService;
@@ -38,7 +40,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 return;
             }
 
-            String token = requestTokenHeader.split("Bearer ")[1];
+//            String token = requestTokenHeader.split("Bearer ")[1];
+            String token = requestTokenHeader.substring(7).trim();
+
+            log.info(token);
             Long userId = jwtService.getUserIdFromToken(token);
 
             if(userId != null && SecurityContextHolder.getContext().getAuthentication() == null){

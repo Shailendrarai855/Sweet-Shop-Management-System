@@ -5,6 +5,7 @@ import com.sweet_shop_server.sweet_shop_server.dto.LoginResponse;
 import com.sweet_shop_server.sweet_shop_server.dto.UserDTO;
 import com.sweet_shop_server.sweet_shop_server.entity.User;
 import com.sweet_shop_server.sweet_shop_server.entity.enumm.Role;
+import com.sweet_shop_server.sweet_shop_server.exceptions.ResourceNotFoundException;
 import com.sweet_shop_server.sweet_shop_server.repository.UserRepository;
 import com.sweet_shop_server.sweet_shop_server.security.JWTService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -60,5 +61,14 @@ public class AuthService {
         String refreshToken = jwtService.generateRefreshToken(user);
         log.info("User logged in with id : "+user.getId());
         return new LoginResponse(accessToken, refreshToken);
+    }
+
+
+    public String refreshToken(String refreshToken) {
+        Long userId = jwtService.getUserIdFromToken(refreshToken);
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found " +
+                "with id: "+userId));
+
+        return jwtService.generateAccessToken(user);
     }
 }
