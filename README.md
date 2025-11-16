@@ -455,7 +455,7 @@ AI helped identify a security vulnerability where users could self-register as a
 
 1. **Planning Phase**: Discussed requirements and architecture with AI
 2. **Implementation**: AI generated initial code, I reviewed and customized
-3. **Testing**: Manually tested functionality, used AI to debug issues
+3. **Testing**: Unit tested functionality, used AI to debug issues
 4. **Refinement**: Iteratively improved code with AI suggestions
 5. **Documentation**: AI helped create comprehensive docs
 
@@ -464,26 +464,10 @@ AI helped identify a security vulnerability where users could self-register as a
 AI was an invaluable co-pilot throughout this project, but it was most effective when combined with:
 - **Critical thinking** to evaluate AI suggestions
 - **Domain knowledge** to guide AI in the right direction
-- **Manual testing** to ensure everything works correctly
+- **Unit testing** to ensure everything works correctly
 - **Code review** to maintain quality and consistency
 
-The result is a production-ready application that leverages AI efficiency while maintaining human oversight and quality control.
 
-## 🧪 Testing
-
-### Backend Testing
-
-```bash
-cd sweet-shop-server
-mvn test
-```
-
-### Frontend Testing
-
-```bash
-cd sweet-shop-client
-npm test
-```
 
 ### Manual Testing Checklist
 
@@ -502,54 +486,7 @@ npm test
 - [ ] Token refresh works automatically
 - [ ] Logout clears session
 
-## 🚀 Deployment
 
-### Backend Deployment
-
-#### Build Production JAR
-```bash
-cd sweet-shop-server
-mvn clean package -DskipTests
-```
-
-#### Run Production Build
-```bash
-java -jar target/sweet-shop-server-0.0.1-SNAPSHOT.jar
-```
-
-### Frontend Deployment
-
-#### Build for Production
-```bash
-cd sweet-shop-client
-npm run build
-```
-
-The production build will be in the `dist` folder, ready to deploy to:
-- Vercel
-- Netlify
-- AWS S3 + CloudFront
-- Any static hosting service
-
-### Environment Variables
-
-#### Backend (Production)
-```bash
-export SPRING_PROFILES_ACTIVE=prod
-export MYSQL_URL=your-production-db-url
-export MYSQL_USERNAME=your-db-username
-export MYSQL_PASSWORD=your-db-password
-export JWT_SECRET=your-super-secure-secret
-```
-
-#### Frontend (Production)
-Update API base URL in `src/services/api.js`:
-```javascript
-const api = axios.create({
-  baseURL: 'https://your-backend-api.com',
-  // ...
-});
-```
 
 ## 🤝 Contributing
 
@@ -588,8 +525,7 @@ This project is licensed under the MIT License.
 
 - [Backend Setup Guide](BACKEND_SETUP.md)
 - [Frontend Setup Guide](FRONTEND_SETUP.md)
-- [Admin Setup Guide](sweet-shop-client/ADMIN_SETUP.md)
-- [User Roles Guide](sweet-shop-client/USER_ROLES_GUIDE.md)
+
 
 ---
 
