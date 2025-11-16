@@ -300,6 +300,7 @@ curl -X GET http://localhost:8050/api/sweets \
 
 ## 📸 Screenshots
 
+<<<<<<< HEAD
 ### Login Page
 ![Login](screenshots/login.png)
 *Secure login with JWT authentication*
@@ -308,6 +309,8 @@ curl -X GET http://localhost:8050/api/sweets \
 ![Register](screenshots/register.png)
 *User-friendly registration form*
 
+=======
+>>>>>>> 183da403ab5617db9ec66909c5c429344eb5f932
 ### Search & Filter
 ![Search Feature](screenshots/search-filter.png)
 *Advanced search functionality to find sweets by name, category, or price range*
